@@ -1,0 +1,96 @@
+[tool.poetry]
+name = "gaia"
+version = "0.0.0"
+description = "Template repository for Python projects"
+authors = ["Yifei Yu <yyu.mam2020@london.edu>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+dataclasses-json = "^0.5.7"
+python-dotenv = "^0.20.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.3.0"
+isort = "^5.10.1"
+pytest = "^7.1.1"
+mypy = "^0.942"
+semgrep = "^0.86.5"
+coverage = {extras = ["toml"], version = "^6.3.2"}
+pyproject-flake8 = "^0.0.1-alpha.3"
+yamllint = "^1.26.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.flake8]
+extend-ignore = "E203"
+exclude = [".git", "__pycache__", "build", "dist", ".venv"]
+max-complexity = 10
+max-line-length = 88
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+addopts = "--junitxml=test_report.xml"
+testpaths = "tests"
+
+[tool.mypy]
+exclude = [
+    ".venv"
+]
+disallow_untyped_defs = true
+disallow_any_unimported = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+
+[tool.coverage.paths]
+source = ["src", "*/site-packages"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 50
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    '''if self\.debug''',
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    '''@(abc\.)?abstractmethod''',
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"
