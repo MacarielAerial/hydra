@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "gaia"
-version = "0.0.0"
-description = "Template repository for Python projects"
+name = "hydra"
+version = "0.0.1"
+description = "Text sequence to graph"
 authors = ["Yifei Yu <yyu.mam2020@london.edu>"]
 license = "MIT"
 readme = "README.md"
@@ -10,6 +10,10 @@ readme = "README.md"
 python = "^3.9"
 dataclasses-json = "^0.5.7"
 python-dotenv = "^0.20.0"
+spacy = "^3.4.0"
+networkx = "^2.8.5"
+spacy-transformers = "^1.1.7"
+en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.0/en_core_web_sm-3.4.0.tar.gz#egg=en_core_web_sm"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
@@ -20,6 +24,7 @@ semgrep = "^0.86.5"
 coverage = {extras = ["toml"], version = "^6.3.2"}
 pyproject-flake8 = "^0.0.1-alpha.3"
 yamllint = "^1.26.3"
+flake8 = "4.0.1"
 
 [build-system]
 requires = ["poetry-core"]
@@ -57,6 +62,14 @@ check_untyped_defs = true
 warn_return_any = true
 warn_unused_ignores = true
 show_error_codes = true
+
+[[tool.mypy.overrides]]
+module = [
+    'en_core_web_sm',
+    'packagename2'
+]
+warn_return_any = false
+ignore_missing_imports = true
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
