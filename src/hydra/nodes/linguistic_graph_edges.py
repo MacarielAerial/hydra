@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Tuple
 
 from dataclasses_json import dataclass_json
 
+from .utils import enum_dict_factory
 
-@dataclass
-@dataclass_json
+
 class DependencyLabel(Enum):
     root: str = "ROOT"
     adjectival_clause: str = "ACL"
@@ -57,9 +57,8 @@ class DependencyLabel(Enum):
     open_clausal_complement: str = "XCOMP"
 
 
-@dataclass_json
-@dataclass
 class EdgeType(Enum):
+    sent_to_para: str = "SentToPara"
     token_to_ner: str = "TokenToNER"
     token_to_sent: str = "TokenToSent"
     token_to_uni_pos: str = "TokenToUniPOS"
@@ -68,7 +67,7 @@ class EdgeType(Enum):
 
 @dataclass_json
 @dataclass
-class EdgeFeats:
+class BaseEdgeFeats:
     etype: EdgeType
     text: str
 
@@ -91,13 +90,13 @@ class EdgeTuples:
 class EdgeTuple:
     src_id: int
     dst_id: int
-    edge_feats: EdgeFeats
+    edge_feats: BaseEdgeFeats
 
     def to_tuple(self) -> Tuple[int, int, Dict[str, Any]]:
         untyped_edge_tuple: Tuple[int, int, Dict[str, Any]] = (
             self.src_id,
             self.dst_id,
-            asdict(self.edge_feats),
+            asdict(self.edge_feats, dict_factory=enum_dict_factory),
         )
 
         return untyped_edge_tuple

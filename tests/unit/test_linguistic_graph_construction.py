@@ -1,13 +1,15 @@
 from logging import Logger
 
-from src.hydra.nodes.linguistic_graph_construction import collect_sent_graph_from_spacy
+from src.hydra.nodes.linguistic_graph_construction import (
+    collect_sent_graph_elements_from_spacy,
+)
 from tests.conftest import TestFixture
 
 
 def test_collect_sent_graph_from_spacy(
     test_logger: Logger, test_fixture: TestFixture
 ) -> None:
-    node_tuples, edge_tuples = collect_sent_graph_from_spacy(
+    node_tuples, edge_tuples = collect_sent_graph_elements_from_spacy(
         sent=test_fixture.example_sentence_span, logger=test_logger
     )
 

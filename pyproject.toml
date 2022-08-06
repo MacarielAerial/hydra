@@ -14,6 +14,7 @@ spacy = "^3.4.0"
 networkx = "^2.8.5"
 spacy-transformers = "^1.1.7"
 en-core-web-sm = {url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.0/en_core_web_sm-3.4.0.tar.gz#egg=en_core_web_sm"}
+networkx-query = "^1.0.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"
@@ -66,7 +67,8 @@ show_error_codes = true
 [[tool.mypy.overrides]]
 module = [
     'en_core_web_sm',
-    'packagename2'
+    'networkx',
+    "networkx_query"
 ]
 warn_return_any = false
 ignore_missing_imports = true

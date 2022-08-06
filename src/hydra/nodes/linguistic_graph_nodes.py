@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Tuple
 
 from dataclasses_json import dataclass_json
 
+from .utils import enum_dict_factory
 
-@dataclass_json
-@dataclass
+
 class UniversalPOSTag(Enum):
     adjective: str = "ADJ"
     adposition: str = "ADP"
@@ -29,8 +29,6 @@ class UniversalPOSTag(Enum):
     other: str = "X"
 
 
-@dataclass_json
-@dataclass
 class NamedEntityLabel(Enum):
     cardinal: str = "CARDINAL"
     date: str = "DATE"
@@ -54,13 +52,17 @@ class NamedEntityLabel(Enum):
 
 @dataclass_json
 @dataclass
-class NodeFeats:
+class BaseNodeFeats:
     ntype: NodeType
     text: str
 
 
 @dataclass_json
 @dataclass
+class TokenNodeFeats(BaseNodeFeats):
+    position_id: int
+
+
 class NodeType(Enum):
     paragraph: str = "PARAGRAPH"
     sentence: str = "SENTENCE"
@@ -74,7 +76,7 @@ class NodeType(Enum):
 class NodeTuples:
     list_node_tuple: List[NodeTuple]
 
-    def to_list_tuple(self) -> List[Tuple[int, Dict[str, Any]]]:
+    def to_list_node_tuple(self) -> List[Tuple[int, Dict[str, Any]]]:
         untyped_list_node_tuple: List[Tuple[int, Dict[str, Any]]] = [
             node_tuple.to_tuple() for node_tuple in self.list_node_tuple
         ]
@@ -86,12 +88,12 @@ class NodeTuples:
 @dataclass
 class NodeTuple:
     node_id: int
-    node_feats: NodeFeats
+    node_feats: BaseNodeFeats
 
     def to_tuple(self) -> Tuple[int, Dict[str, Any]]:
         untyped_node_tuple: Tuple[int, Dict[str, Any]] = (
             self.node_id,
-            asdict(self.node_feats),
+            asdict(self.node_feats, dict_factory=enum_dict_factory),
         )
 
         return untyped_node_tuple
