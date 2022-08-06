@@ -4,6 +4,7 @@ from src.hydra.nodes.linguistic_graph_construction import (
     build_graph_from_node_tuples_and_edge_tuples,
     collect_sent_graph_elements_from_spacy,
     contract_ntype_nodes_by_identical_text,
+    parse_for_para_graph_with_spacy,
 )
 from src.hydra.nodes.linguistic_graph_nodes import NodeType
 from tests.conftest import TestFixture
@@ -44,3 +45,16 @@ def test_contract_ntype_nodes_by_identical_text(
 
     assert len(nx_g.nodes) == 2
     assert len(nx_g.edges) == 1
+
+
+def test_parse_for_para_graph_with_spacy(
+    test_logger: Logger, test_fixture: TestFixture
+) -> None:
+    para_graph = parse_for_para_graph_with_spacy(
+        text=test_fixture.example_paragraph,
+        nlp=test_fixture.example_spacy_model,
+        logger=test_logger,
+    )
+
+    assert len(para_graph.nodes) > 0
+    assert len(para_graph.edges) > 0

@@ -55,6 +55,7 @@ class DependencyLabel(Enum):
     modifier_of_quantifier: str = "QUANTMOD"
     relative_clause_modifier: str = "RELCL"
     open_clausal_complement: str = "XCOMP"
+    mark: str = "MARK"
 
 
 class EdgeType(Enum):

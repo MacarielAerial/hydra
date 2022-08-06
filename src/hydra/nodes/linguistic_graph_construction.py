@@ -6,6 +6,7 @@ from typing import Dict, List, Set, Tuple
 import networkx as nx
 from networkx import DiGraph, Graph
 from networkx_query import search_nodes
+from spacy.language import Language
 from spacy.tokens import Span
 
 from .linguistic_graph_config import NetworkXGraphType
@@ -276,3 +277,66 @@ def contract_ntype_nodes_by_identical_text(  # type: ignore[no-any-unimported]
         )
 
     return nx_g
+
+
+def parse_for_para_graph_with_spacy(  # type: ignore[no-any-unimported]
+    text: str, nlp: Language, logger: Logger
+) -> Graph:
+    logger.debug(
+        "Attempting to construct a graph from a text sequence " f"of length {len(text)}"
+    )
+
+    # Define types of nodes for contraction
+    list_contract_ntype: List[NodeType] = [
+        NodeType.token,
+        NodeType.ner,
+        NodeType.uni_pos,
+    ]
+
+    logger.debug(
+        "Nodes of the following list of node types is specified to be contracted"
+        f"{list_contract_ntype}"
+    )
+
+    # Parse paragraph text with a spacy model
+    doc = nlp(text)
+
+    # Initiate an iterable to store sentence graphs
+    list_sent_graph: List[Graph] = []  # type: ignore[no-any-unimported]
+
+    for sent in doc.sents:
+        #
+        # Construct a sentence graph
+        #
+
+        node_tuples, edge_tuples = collect_sent_graph_elements_from_spacy(
+            sent=sent, logger=logger
+        )
+        nx_g = build_graph_from_node_tuples_and_edge_tuples(
+            node_tuples=node_tuples, edge_tuples=edge_tuples, logger=logger
+        )
+        for ntype in list_contract_ntype:
+            nx_g = contract_ntype_nodes_by_identical_text(
+                nx_g=nx_g, ntype=ntype, logger=logger
+            )
+        list_sent_graph.append(nx_g)
+
+    logger.debug(f"Collected {len(list_sent_graph)} sentence graphs")
+
+    # Perform a simple union over all sentence graphs
+    para_graph = nx.disjoint_union_all(graphs=list_sent_graph)
+
+    for ntype in list_contract_ntype:
+        para_graph = contract_ntype_nodes_by_identical_text(
+            nx_g=para_graph, ntype=ntype, logger=logger
+        )
+
+    # Relabel node ids to narrow the range of node ids
+    para_graph = nx.convert_node_labels_to_integers(G=para_graph)
+
+    logger.debug(
+        "Relabelled paragraph graph whose maximum node id is "
+        f"{max(para_graph.nodes)}"
+    )
+
+    return para_graph

@@ -27,6 +27,7 @@ class UniversalPOSTag(Enum):
     symbol: str = "SYM"
     ver: str = "VERB"
     other: str = "X"
+    space: str = "SPACE"
 
 
 class NamedEntityLabel(Enum):

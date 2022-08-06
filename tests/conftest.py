@@ -50,18 +50,18 @@ class TestFixture:
 
     @property
     def example_paragraph(self) -> str:
-        paragraph: str = "In 'To Have and Have Not,' an article in American Theatre "
-        "about the need for artists to empower themselves, "
-        "arts advocate and activist Jaan Whitehead warns: "
-        "'The relationship of language to identity is one of our "
-        "least appreciated issues. Language is always more powerful than "
-        "it seems in everyday life. It expresses our view of ourselves, "
-        "but it also constitutes that view. We can only talk about ourselves "
-        "in the language we have available. If that language is rich, it "
-        "illuminates us. But if it is narrow or restricted, it represses "
-        "and conceals us. If we do not have language that describes "
-        "what we believe ourselves to be or what we want to be, we risk "
-        "being defined in someone else’s terms.'"
+        paragraph: str = """In 'To Have and Have Not,' an article in American Theatre
+        about the need for artists to empower themselves,
+        arts advocate and activist Jaan Whitehead warns:
+        'The relationship of language to identity is one of our
+        least appreciated issues. Language is always more powerful than
+        it seems in everyday life. It expresses our view of ourselves,
+        but it also constitutes that view. We can only talk about ourselves
+        in the language we have available. If that language is rich, it
+        illuminates us. But if it is narrow or restricted, it represses
+        and conceals us. If we do not have language that describes
+        what we believe ourselves to be or what we want to be, we risk
+        being defined in someone else’s terms.'"""
 
         return paragraph
 
