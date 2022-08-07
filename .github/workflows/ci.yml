@@ -1,4 +1,4 @@
-name: gaia
+name: hydra
 
 on:  # yamllint disable-line rule:truthy
   - push
